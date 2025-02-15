@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Binary Converter</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <style>
+            body {
+                background-color: #a41917;
+                overflow-x: hidden;
+                font-family: "Poppins", serif;
+            }
+            .header {
+                font-size: 3vw;
+                color: #ee8b1a;
+                text-align: center;
+            }
+            .header-div {
+                border-bottom: 0.35vw solid #0e0f15;
+                width: 100vw;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .userinput, .show-whole, .show-decimal, .show-combined{
+                background-color: #ee9b1a;
+                font-family: Poppins;
+                color: #0e0e0e;
+                height: 2vw;
+                border-radius: 10px;
+                border: 2px solid #0e0f15;
+                text-align: center;
+            }
+            .show-whole, .show-decimal, .show-combined {
+                width: 15vw;
+                border-radius: 10px;
+                border: 2px solid #0e0f15;
+                text-align: center;
+                pointer-events: none; 
+            }
+
+            .userinput {
+                width: 25vw;
+                position: absolute;
+                left: 700px;
+                top: 250px;
+            }
+            .convert-btn {
+                background-color: #ee9b1a;
+                font-family: Poppins;
+                color: #0e0e0e;
+                height: 2vw;
+                width: 12vw;
+                position: absolute;
+                left: 825px;
+                top: 310px;
+                cursor: pointer;
+                font-weight: bold;
+                border-radius: 10px;
+                border: 2px solid #0e0f15;
+                transition: filter 0.2s ease-in-out;
+            }
+
+            .convert-btn:hover {
+                filter: brightness(85%);
+            }
+
+            .display-whole, .display-decimal, .display-combined {
+                color: #ee9b1a;
+                position: absolute;
+            }
+            .display-whole { left: 450px; top: 350px; }
+            .display-decimal { left: 1250px; top: 350px; }
+            .display-combined { left: 880px; top: 700px; }
+            .show-whole { width: 15vw; position: absolute; left: 400px; top: 425px; }
+            .show-decimal { width: 15vw; position: absolute; left: 1160px; top: 425px; }
+            .show-combined { width: 15vw; position: absolute; left: 805px; top: 785px; }
+        </style>
+    </head>
+    <body>
+        <div class="header-div">
+            <h1 class="header">
+                Binary Converter
+            </h1>  
+        </div>
+
+        <div class="bodyinfo">
+            <input type="text" class="userinput" inputmode="decimal" id="userinput" value="">
+            <button class="convert-btn" id="convert-btn" onclick="ConvertInput()">Convert</button>
+
+            <h2 class="display-whole">Whole Number:</h2>
+            <input type="text" class="show-whole" id="whole-value" readonly>
+
+            <h2 class="display-decimal">Decimal:</h2>
+            <input type="text" class="show-decimal" id="decimal-value" readonly>
+
+            <h2 class="display-combined">Combined:</h2>
+            <input type="text" class="show-combined" id="combined-value" readonly>
+        </div>
+    </body>
+    <script>
+        document.getElementById("convert-btn").addEventListener("click", function() {
+            let inputValue = document.getElementById("userinput").value;
+        });
+
+        function ConvertInput() {
+            let inputValue = document.getElementById("userinput").value;
+            
+            if (isNaN(inputValue) || inputValue.trim() === "") {
+                alert("Please enter a valid number.");
+                return;
+            }
+            
+            let number = parseFloat(inputValue);
+            let wholePart = Math.floor(number); 
+            let decimalPart = number - wholePart; 
+
+           
+            let wholeBinary = wholePart.toString(2);
+            
+            let decimalBinary = ConvertDecimalToBinary(decimalPart);
+            
+            document.getElementById("whole-value").value = wholeBinary;
+            document.getElementById("decimal-value").value = decimalBinary;
+            document.getElementById("combined-value").value = wholeBinary + (decimalBinary ? '.' + decimalBinary : '');
+        }
+
+        function ConvertDecimalToBinary(decimalPart) {
+            if (decimalPart === 0) return "0";
+            
+            let binary = "";
+            let limit = 15; 
+            while (decimalPart > 0 && limit > 0) {
+                decimalPart *= 2;
+                if (decimalPart >= 1) {
+                    binary += "1";
+                    decimalPart -= 1;
+                } else {
+                    binary += "0";
+                }
+                limit--;
+            }
+            return binary;
+        }
+    </script>
+</html>
